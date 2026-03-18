@@ -8,8 +8,10 @@ import { config } from '../../config';
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt:', { email, passwordLength: password?.length });
 
     if (!email || !password) {
+      console.log('Missing credentials');
       return res.status(400).json({
         success: false,
         message: 'Username/email and password are required',
@@ -18,6 +20,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Find user by email or username
+    console.log('Searching for user with email/username:', email);
     const user = await User.findOne({
       where: { 
         [require('sequelize').Op.or]: [
@@ -36,6 +39,7 @@ export const login = async (req: Request, res: Response) => {
     });
 
     if (!user) {
+      console.log('User not found');
       return res.status(401).json({
         success: false,
         message: 'Invalid username/email or password',
@@ -44,9 +48,13 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const plain: any = user.toJSON();
+    console.log('User found:', { id: plain.id, email: plain.email, username: plain.username });
 
     // Verify password
+    console.log('Verifying password...');
     const isValidPassword = await bcrypt.compare(password, plain.password_hash);
+    console.log('Password valid:', isValidPassword);
+    
     if (!isValidPassword) {
       return res.status(401).json({
         success: false,
