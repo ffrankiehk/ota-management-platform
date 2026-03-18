@@ -4,6 +4,7 @@ import { sequelize } from '../config/database';
 interface UserAttributes {
   id: string;
   organization_id: string;
+  username: string;
   email: string;
   password_hash: string;
   role: 'admin' | 'developer' | 'viewer';
@@ -24,6 +25,7 @@ export class User
 {
   public id!: string;
   public organization_id!: string;
+  public username!: string;
   public email!: string;
   public password_hash!: string;
   public role!: 'admin' | 'developer' | 'viewer';
@@ -42,6 +44,11 @@ User.init(
     organization_id: {
       type: DataTypes.UUID,
       allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
     },
     email: {
       type: DataTypes.STRING(255),
