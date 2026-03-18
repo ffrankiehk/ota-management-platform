@@ -24,7 +24,6 @@ async function seed() {
     const [user] = await User.findOrCreate({
       where: { email: 'admin@example.com' },
       defaults: {
-        organization_id: org.id,
         username: 'admin',
         email: 'admin@example.com',
         password_hash: passwordHash,
