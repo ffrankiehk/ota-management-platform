@@ -3,7 +3,7 @@ import { sequelize } from '../config/database';
 
 interface UserAttributes {
   id: number;
-  organization_id?: string;
+  organization_id?: number;
   username: string;
   email: string;
   password_hash: string;
@@ -24,7 +24,7 @@ export class User
   implements UserAttributes
 {
   public id!: number;
-  public organization_id?: string;
+  public organization_id?: number;
   public username!: string;
   public email!: string;
   public password_hash!: string;
@@ -42,7 +42,7 @@ User.init(
       primaryKey: true,
     },
     organization_id: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: true,
     },
     username: {
