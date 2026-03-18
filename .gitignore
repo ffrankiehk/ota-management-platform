@@ -104,3 +104,14 @@ Thumbs.db
 # Bundle storage
 bundles/
 uploads/
+
+# Test files and apps
+test-*.js
+test-app-*/
+verify-*.js
+fix-*.sh
+seed-*.js
+
+# Temporary files
+*.tar.gz
+*.zip
