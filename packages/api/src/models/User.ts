@@ -2,8 +2,8 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 
 interface UserAttributes {
-  id: string;
-  organization_id: string;
+  id: number;
+  organization_id?: string;
   username: string;
   email: string;
   password_hash: string;
@@ -16,15 +16,15 @@ interface UserAttributes {
 interface UserCreationAttributes
   extends Optional<
     UserAttributes,
-    'id' | 'role' | 'is_active' | 'created_at' | 'updated_at'
+    'id' | 'organization_id' | 'role' | 'is_active' | 'created_at' | 'updated_at'
   > {}
 
 export class User
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  public id!: string;
-  public organization_id!: string;
+  public id!: number;
+  public organization_id?: string;
   public username!: string;
   public email!: string;
   public password_hash!: string;
@@ -37,13 +37,13 @@ export class User
 User.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     organization_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
+      type: DataTypes.STRING(255),
+      allowNull: true,
     },
     username: {
       type: DataTypes.STRING(255),
