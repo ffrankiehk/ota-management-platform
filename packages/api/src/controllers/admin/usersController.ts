@@ -51,12 +51,12 @@ export const listUsers = async (req: Request, res: Response) => {
 // POST /api/v1/admin/users
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { email, password, role = 'viewer', organizationId, isActive = true } = req.body;
+    const { username, email, password, role = 'viewer', organizationId, isActive = true } = req.body;
 
-    if (!email || !password) {
+    if (!username || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'email and password are required',
+        message: 'username, email and password are required',
         timestamp: new Date().toISOString(),
       });
     }
@@ -82,6 +82,7 @@ export const createUser = async (req: Request, res: Response) => {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = await User.create({
+      username,
       email,
       password_hash: passwordHash,
       role,

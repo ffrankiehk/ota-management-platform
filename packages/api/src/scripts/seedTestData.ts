@@ -25,6 +25,7 @@ async function seed() {
       where: { email: 'admin@example.com' },
       defaults: {
         organization_id: org.id,
+        username: 'admin',
         email: 'admin@example.com',
         password_hash: passwordHash,
         role: 'admin',
