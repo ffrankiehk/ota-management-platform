@@ -12,14 +12,20 @@ export const login = async (req: Request, res: Response) => {
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Email and password are required',
+        message: 'Username/email and password are required',
         timestamp: new Date().toISOString(),
       });
     }
 
-    // Find user by email
+    // Find user by email or username
     const user = await User.findOne({
-      where: { email, is_active: true },
+      where: { 
+        [require('sequelize').Op.or]: [
+          { email },
+          { username: email }
+        ],
+        is_active: true 
+      },
       include: [
         {
           model: Organization,
@@ -32,7 +38,7 @@ export const login = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password',
+        message: 'Invalid username/email or password',
         timestamp: new Date().toISOString(),
       });
     }
