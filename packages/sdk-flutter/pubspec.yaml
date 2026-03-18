@@ -1,0 +1,30 @@
+name: ota_platform_sdk
+description: Flutter SDK for OTA Platform - Over-the-Air update management
+version: 1.0.0
+homepage: https://github.com/your-org/ota-platform
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0
+  crypto: ^3.0.3
+  path_provider: ^2.1.1
+  device_info_plus: ^9.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.otaplatform.sdk
+        pluginClass: OtaPlatformSdkPlugin
+      ios:
+        pluginClass: OtaPlatformSdkPlugin

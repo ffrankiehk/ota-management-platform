@@ -1,0 +1,123 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: ota_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ota_platform}
+      POSTGRES_USER: ${POSTGRES_USER:-ota_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ota_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ota_user} -d ${POSTGRES_DB:-ota_platform}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ota_network
+
+  mt_cms:
+    build:
+      context: ../mental-therapy-app/cms
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${MT_CMS_API_URL:-http://34.143.178.171:3032/api}
+    container_name: mt_cms
+    restart: always
+    ports:
+      - "3033:80"
+    depends_on:
+      mt_backend:
+        condition: service_started
+    networks:
+      - ota_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ota_redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - ota_network
+
+  api:
+    build:
+      context: .
+      dockerfile: packages/api/Dockerfile
+    container_name: ota_api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://ota_user:ff906114@10.148.0.2:5432/ota_platform
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-change_this_in_production}
+      NODE_ENV: production
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://34.143.178.171:3001}
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/uploads
+      - bundles_data:/app/bundles
+    networks:
+      - ota_network
+
+  mt_backend:
+    build:
+      context: ../mental-therapy-app/backend
+      dockerfile: Dockerfile
+    container_name: mt_backend
+    restart: always
+    ports:
+      - "3032:3032"
+    environment:
+      PORT: 3032
+      DB_DIALECT: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: therapy_app
+      DB_USER: ${POSTGRES_USER:-ota_user}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-ota_password}
+      NODE_ENV: production
+      JWT_SECRET: ${MT_JWT_SECRET:-super_secure_jwt_secret_change_me}
+      CORS_ORIGIN: "http://34.143.178.171:3000,http://34.143.178.171:3001,http://34.143.178.171:3033"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ota_network
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: packages/dashboard/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://34.143.178.171:3000}
+    container_name: ota_dashboard
+    restart: always
+    ports:
+      - "3001:80"
+    depends_on:
+      - api
+    networks:
+      - ota_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:
+  bundles_data:
+
+networks:
+  ota_network:
+    driver: bridge

@@ -1,0 +1,58 @@
+{
+  "name": "ota-management-platform",
+  "version": "1.0.0",
+  "description": "Universal OTA Management Platform for React Native Applications",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:dashboard\"",
+    "dev:api": "npm run dev --workspace=packages/api",
+    "dev:dashboard": "npm run dev --workspace=packages/dashboard",
+    "dev:infrastructure": "docker-compose up -d postgres redis minio",
+    "build": "npm run build --workspaces",
+    "build:shared": "npm run build --workspace=packages/shared",
+    "test": "npm run test --workspaces",
+    "lint": "eslint packages/*/src --ext .ts,.tsx",
+    "type-check": "npm run type-check --workspaces",
+    "clean": "rimraf packages/*/dist packages/*/node_modules node_modules",
+    "setup": "npm install && npm run build:shared",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "concurrently": "^8.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/ota-management-platform.git"
+  },
+  "keywords": [
+    "ota",
+    "over-the-air",
+    "react-native",
+    "mobile",
+    "update",
+    "management",
+    "platform"
+  ],
+  "author": "Your Organization",
+  "license": "MIT",
+  "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/your-org/ota-management-platform/issues"
+  },
+  "homepage": "https://github.com/your-org/ota-management-platform#readme"
+}

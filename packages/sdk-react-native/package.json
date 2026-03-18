@@ -1,0 +1,34 @@
+{
+  "name": "@ota-platform/sdk-react-native",
+  "version": "1.0.0",
+  "description": "React Native SDK for OTA Management Platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "ota",
+    "react-native",
+    "update",
+    "over-the-air"
+  ],
+  "author": "OTA Platform",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-native": ">=0.60.0"
+  },
+  "dependencies": {
+    "react-native-fs": "^2.20.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-native": "^0.72.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  }
+}
