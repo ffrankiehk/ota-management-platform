@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedExtensions = [
     // React Native
-    '.bundle', '.js', '.jsbundle',
+    '.bundle', '.js', '.jsbundle', '.hbc',
     // Android
     '.apk', '.aab', '.zip',
     // iOS
@@ -89,8 +89,8 @@ export const uploadBundle = async (req: Request, res: Response) => {
     // Get file stats
     const stats = fs.statSync(filePath);
 
-    // Generate URL (relative to API server)
-    const baseUrl = process.env.API_BASE_URL || `http://localhost:${process.env.API_PORT || 3000}`;
+    // Generate URL (use public domain for production)
+    const baseUrl = process.env.PUBLIC_URL || process.env.API_BASE_URL || 'https://ota.2maru.com';
     const bundleUrl = `${baseUrl}/uploads/bundles/${file.filename}`;
 
     return res.json({

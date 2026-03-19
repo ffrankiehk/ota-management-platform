@@ -315,7 +315,11 @@ const ApplicationDetailPage: React.FC = () => {
                 { value: 'archived', label: 'Archived' },
               ]}
             />
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => setModalVisible(true)}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => {
+              setModalVisible(true);
+              setUploadedFile(null);
+              setUploadProgress(0);
+            }}>
               Create Release
             </Button>
           </Space>
