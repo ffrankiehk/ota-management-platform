@@ -134,10 +134,12 @@ const ApplicationDetailPage: React.FC = () => {
 
       if (res.data?.success && res.data.data) {
         const { url, hash, size, filename } = res.data.data;
-        setUploadedFile({ url, hash, size, filename });
+        // Replace localhost with public domain
+        const publicUrl = url.replace(/http:\/\/localhost:\d+/, 'https://ota.2maru.com');
+        setUploadedFile({ url: publicUrl, hash, size, filename });
         // Auto-fill form fields
         form.setFieldsValue({
-          bundleUrl: url,
+          bundleUrl: publicUrl,
           bundleHash: hash,
           bundleSize: size,
         });
