@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Tabs, Card, Divider, List } from 'antd';
-import { RocketOutlined, BuildOutlined, KeyOutlined, SettingOutlined } from '@ant-design/icons';
+import { RocketOutlined, BuildOutlined, KeyOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -63,6 +63,57 @@ const TutorialPage: React.FC = () => {
  <List.Item><Text>{index + 1}. {item}</Text></List.Item>
  )}
  />
+ </Card>
+ </Tabs.TabPane>
+
+ <Tabs.TabPane tab={<span><TeamOutlined /> 5. 測試與分組</span>} key='5'>
+ <Card title='內部測試流程 (Test Groups)'>
+ <Title level={4}>第一步：獲取設備 ID (Device ID)</Title>
+ <Paragraph>
+ 在應用程式啟動時，可以在開發環境的控制台 (Console Log) 中看到 <code>deviceId</code>。
+ </Paragraph>
+ <div style={{ background: '#f5f5f5', padding: '16px', borderRadius: '4px', marginBottom: '16px' }}>
+ <Text type="secondary">日誌範例：</Text>
+ <code style={{ display: 'block', marginTop: '8px' }}>[OTA] Device ID: 8F67600F-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>
+ </div>
+
+ <Divider />
+
+ <Title level={4}>第二步：建立測試分組</Title>
+ <List
+ dataSource={[
+ '在管理平台左側選單進入 "Devices"',
+ '或者進入特定專案後的 "Test Groups" 標籤',
+ '點擊 "Create New Group"',
+ '輸入分組名稱 (例如：Internal_Testers)',
+ '在 "Devices" 欄位貼入獲取的 Device ID',
+ '點擊 "Save" 保存'
+ ]}
+ renderItem={(item, index) => (
+ <List.Item><Text>{index + 1}. {item}</Text></List.Item>
+ )}
+ />
+
+ <Divider />
+
+ <Title level={4}>第三步：定向發布更新</Title>
+ <Paragraph>
+ 在「發布更新」的配置頁面 (Release Config) 中：
+ </Paragraph>
+ <List
+ dataSource={[
+ '尋找 "Target Audience" 或 "Push To" 選項',
+ '選擇 "Specific Groups"',
+ '勾選您剛建立的測試分組',
+ '完成發布'
+ ]}
+ renderItem={(item, index) => (
+ <List.Item><Text>{index + 1}. {item}</Text></List.Item>
+ )}
+ />
+ <div style={{ marginTop: '16px', padding: '12px', background: '#fff7e6', border: '1px solid #ffe7ba', borderRadius: '4px' }}>
+ <Text type="warning">提示：只有屬於該分組的設備會收到此更新，不會影響正式環境用戶。</Text>
+ </div>
  </Card>
  </Tabs.TabPane>
  </Tabs>

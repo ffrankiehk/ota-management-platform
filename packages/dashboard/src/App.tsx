@@ -11,6 +11,8 @@ import UpdateLogsPage from './pages/UpdateLogs/UpdateLogsPage';
 import UsersPage from './pages/Users/UsersPage';
 import OrganizationsPage from './pages/Organizations/OrganizationsPage';
 import LoginPage from './pages/Login/LoginPage';
+import TutorialPage from './pages/Tutorial/TutorialPage';
+import { BookOutlined } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
 
@@ -44,6 +46,7 @@ const MainLayout: React.FC = () => {
     if (location.pathname.startsWith('/update-logs')) return 'update-logs';
     if (location.pathname.startsWith('/users')) return 'users';
     if (location.pathname.startsWith('/organizations')) return 'organizations';
+    if (location.pathname.startsWith('/tutorial')) return 'tutorial';
     if (location.pathname.startsWith('/overview')) return 'overview';
     return 'overview';
   }, [location.pathname]);
@@ -81,6 +84,8 @@ const MainLayout: React.FC = () => {
               { type: 'divider' },
               { key: 'users', icon: <TeamOutlined />, label: <Link to="/users">Users</Link> },
               { key: 'organizations', icon: <BankOutlined />, label: <Link to="/organizations">Organizations</Link> },
+              { type: 'divider' },
+              { key: 'tutorial', icon: <BookOutlined />, label: <Link to="/tutorial">Tutorial Center</Link> },
             ]}
           />
         </Sider>
@@ -94,6 +99,7 @@ const MainLayout: React.FC = () => {
               <Route path="/update-logs" element={<UpdateLogsPage />} />
               <Route path="/users" element={<UsersPage />} />
               <Route path="/organizations" element={<OrganizationsPage />} />
+              <Route path="/tutorial" element={<TutorialPage />} />
             </Routes>
           </Content>
         </Layout>

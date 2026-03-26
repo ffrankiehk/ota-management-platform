@@ -89,9 +89,9 @@ export const uploadBundle = async (req: Request, res: Response) => {
     // Get file stats
     const stats = fs.statSync(filePath);
 
-    // Generate URL (use public domain for production)
+    // Generate URL using API download endpoint (works through Apache reverse proxy)
     const baseUrl = process.env.PUBLIC_URL || process.env.API_BASE_URL || 'https://ota.2maru.com';
-    const bundleUrl = `${baseUrl}/uploads/bundles/${file.filename}`;
+    const bundleUrl = `${baseUrl}/api/v1/ota/download/${file.filename}`;
 
     return res.json({
       success: true,

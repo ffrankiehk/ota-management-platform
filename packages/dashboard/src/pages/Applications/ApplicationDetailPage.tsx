@@ -55,6 +55,7 @@ interface ApplicationDetail {
   updatedAt: string;
   organization: { id: string; name: string; slug: string } | null;
   releases: ReleaseRow[];
+  testGroups: { id: string; name: string }[];
 }
 
 const formatBytes = (bytes: number): string => {
@@ -172,6 +173,7 @@ const ApplicationDetailPage: React.FC = () => {
         rolloutPercentage: values.rolloutPercentage || 0,
         isMandatory: values.isMandatory || false,
         status: values.status || 'draft',
+        testGroupIds: values.testGroupIds || [],
       });
       if (res.data?.success) {
         message.success('Release created successfully');
@@ -204,6 +206,7 @@ const ApplicationDetailPage: React.FC = () => {
         rolloutPercentage: values.rolloutPercentage || 0,
         isMandatory: values.isMandatory || false,
         status: values.status,
+        testGroupIds: values.testGroupIds || [],
       });
       if (res.data?.success) {
         message.success('Release updated successfully');
@@ -551,6 +554,14 @@ const ApplicationDetailPage: React.FC = () => {
               <Select.Option value="draft">Draft</Select.Option>
               <Select.Option value="active">Active</Select.Option>
               <Select.Option value="paused">Paused</Select.Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="testGroupIds" label="Target Test Groups (Optional)">
+            <Select mode="multiple" placeholder="Select test groups for targeted release">
+              {data.testGroups?.map(group => (
+                <Select.Option key={group.id} value={group.id}>{group.name}</Select.Option>
+              ))}
             </Select>
           </Form.Item>
 
